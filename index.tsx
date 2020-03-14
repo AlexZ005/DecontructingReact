@@ -1,6 +1,8 @@
 let React = {
-    createElement: (...args) => {
-    console.log(args);
+    createElement: (tag, props, ...children) => {
+    var element = {tag, props: {...props, children}};
+    console.log( element );
+    return element;
     },
 };
 
