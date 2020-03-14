@@ -1,6 +1,6 @@
 let React = {
     createElement: (...args) => {
-    console.log(args);conso
+    console.log(args);
     },
 };
 
