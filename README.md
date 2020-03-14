@@ -16,4 +16,6 @@ yarn parcel index.html -p 8080 #default port is 1234
 9:41 - 11:05 prepare App and detect it as a function
 "const a" is a react element, we make from it a React component by making from it a function, we call it App
 hardcoding App as function by using typeof to return function props
+11:05 - 17:00  making a renderer, to show recursevly elements from "virtual DOM"
+Quote: 12:05 "Any element in the DOM with an ID, the ID is also a global javascript variable", so you could call window.app instead document.querySelector('#app')
 
