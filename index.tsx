@@ -9,10 +9,22 @@ let React = {
     },
 };
 
-const App = () => (<div className="react-2020">
-<h1>Hello, person!</h1>
-<p>Yes</p></div>
+const App = () => {
+    const [name, setName] = useState("person");
+    return (
+        <div className="react-2020">
+        <h1>Hello, {name}!</h1>
+        <input value={name} onchange={e => setName(e.target.value)} type=text placeholder="name" />
+        <p>Yes</p></div>
 );
+};
+
+const useState = (initialState) => {
+    let state = initialState;
+    const setState = (newState) => (state = newState);
+
+    return [state, setState]
+}
 
 const renderer = (reactElement, container) => {
     if(['string','number'].includes(typeof reactElement)){
@@ -29,6 +41,10 @@ const renderer = (reactElement, container) => {
     //append root to the container
     container.appendChild(actualDomElement);
 
+}
+
+const rerender = () => {
+    renderer(<App />, document.querySelector('#app'));
 }
 //windows.app the id is also a variable
 renderer(<App />, document.querySelector('#app'));
