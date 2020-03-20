@@ -11,17 +11,26 @@ let React = {
 
 const App = () => {
     const [name, setName] = useState("person");
+    const [count, setCount] = useState(0);
     return (
         <div className="react-2020">
         <h1>Hello, {name}!</h1>
         <input value={name} onchange={e => setName(e.target.value)} type=text placeholder="name" />
+        <h2>The count is: {count}</h2>
+        <button onclick={() => setCount(count + 1)}>+</button>
+        <button onclick={() => setCount(count - 1)}>-</button>
         <p>Yes</p></div>
 );
 };
 
 const useState = (initialState) => {
+    console.log("useState called with: ", initialState);
     let state = initialState;
-    const setState = (newState) => (state = newState);
+    const setState = (newState) => {
+        console.log("setState called with: ", setState);
+        (state = newState)
+        rerender();
+        };
 
     return [state, setState]
 }
@@ -44,6 +53,7 @@ const renderer = (reactElement, container) => {
 }
 
 const rerender = () => {
+    document.querySelector("#app").firstChild.remove();
     renderer(<App />, document.querySelector('#app'));
 }
 //windows.app the id is also a variable
