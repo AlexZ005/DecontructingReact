@@ -44,5 +44,7 @@ Quote: 22:16 every javascript module is a closure and index.tsx too
 
 23:26 we have two 'moving parts' for state, a field and count buttons, from here we write store for states
 
+26:35 this is where closure comes in, we wrote logic to udpate state
 
+27:43 on renderer we reset cursor, this is where we start to see changes visually, applauses
 

@@ -4,7 +4,7 @@ let React = {
             return tag(props);
         }
     var element = {tag, props: {...props, children}};
-    console.log( element );
+//    console.log( element );
     return element;
     },
 };
@@ -23,16 +23,22 @@ const App = () => {
 );
 };
 
+//Moving parts of our app
+const states = []
+let stateCursor = 0;
+
 const useState = (initialState) => {
-    console.log("useState called with: ", initialState);
-    let state = initialState;
+    const FROZENCURSOR = stateCursor;
+    states[FROZENCURSOR] = states[FROZENCURSOR] || initialState;
+    
+    console.log(states);
     const setState = (newState) => {
-        console.log("setState called with: ", setState);
-        (state = newState)
+        states[FROZENCURSOR] = newState;
         rerender();
         };
+    stateCursor++;
 
-    return [state, setState]
+    return [states[FROZENCURSOR], setState]
 }
 
 const renderer = (reactElement, container) => {
@@ -53,6 +59,7 @@ const renderer = (reactElement, container) => {
 }
 
 const rerender = () => {
+    stateCursor = 0;
     document.querySelector("#app").firstChild.remove();
     renderer(<App />, document.querySelector('#app'));
 }
