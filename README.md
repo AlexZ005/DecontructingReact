@@ -47,4 +47,67 @@ Quote: 22:16 every javascript module is a closure and index.tsx too
 26:35 this is where closure comes in, we wrote logic to udpate state
 
 27:43 on renderer we reset cursor, this is where we start to see changes visually, applauses
+Quote: 28:10 if you have 
+28:16-29:52 the example below is completely unpredictable, this is why we have rules and hooks:
+    let count = 423423;
+    let setCount = () => {};
+    if (Math.random () > 0.5) {
+        [count, setCount] = useState(0);
+    }
 
+React would throw if we do this
+
+30:14 - 37:05 concurrent mode
+async rendering is when React stops, waits and then continues...
+Quote: 30:40 The way team came on a lot of fire for the way they implementeded it, because some people say they 'abused javascript' specification by throwing not errors, but promises.
+
+The component trees are super deep, but we need to respond with something on the top.
+This is how try/catch works, you can throw an error anywhere and catch anywhere at it just knows,
+this emulates functional programming paradigm called algebraic effects - a way to respond to things deep inside globally.
+
+This code inside App is used to suspense for data fetching in concurrent mode.
+React exposes a primitive called craeteResource (a function which wraps a promise):
+
+```javascript
+    const  dogPhotoUrl = createResouce(() => fetch("https://dog.ceo/api/breeds/image/random")
+            .then(r => r.json())
+            .then(payload => payload.message), 'dogPhoto');
+```
+
+We implement craeteResource as fetching alone would return "Cannot read property 'children' of undefined".
+
+```javascript
+const promiseCache = new Map();
+
+const createResouce = (thingThatReturnsSomething, key) => {
+    if (promiseCache.has(key)){
+        return promiseCache.get(key);
+    }
+    throw {promise: thingThatReturnsSomething(), key};
+}
+```
+Because this is a promise, we expect to go and fetch it first, but not now.
+Since App function gets called at createElement, this is why try/catch implemented there.
+
+```javascript
+let React = {
+    createElement: (tag, props, ...children) => {
+        if (typeof tag == "function"){
+            try {
+            return tag(props);
+            } catch ({promise, key}) {
+                promise.then(data => {
+                    console.log(promise);
+                    promiseCache.set(key,data);
+                    rerender();
+                })
+                return {tag: 'h1', props: {children: ['I AM LOADING']}}
+            }
+        }
+```
+
+Tejas says we implemented three pillars of how React works.
+
+There is a whole topic of reconciler , bread first algoright that searches and detects changes
+The purpose was to learn, building is learning.
+Huge shot out THANKS to Tejas for presenting!
